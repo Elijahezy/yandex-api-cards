@@ -75,7 +75,7 @@ const Cart = (props: any) => {
                             type="search"
                             id="address"
                             placeholder='г.Санкт-Петербург'
-                            required /> :
+                            required />
                     </S.ContactsContainer>
                     <S.ContactsContainer>
                         <S.ContainerFlexRows>
