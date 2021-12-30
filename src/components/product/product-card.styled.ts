@@ -15,11 +15,13 @@ const ContainerFlexRows = styled.div`
         width: 180px;
         padding-left: 20px;
 
+
         h4 {
             font-size: 20px;
         }
 
         p {
+            margin: 10px 0px 10px 0px;
             color: ${({ theme }) => theme.colors.grey1}
         }
     }
@@ -64,6 +66,7 @@ const ButtonFlex = styled.div`
         border: 0px;
         font-size: 20px;
         background-color: white;
+        padding: 5px;
     }
     
 

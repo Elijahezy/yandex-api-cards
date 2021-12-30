@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import * as S from '../cart/cart.styled';
+import * as S from './product-card.styled'
 import { decreaseAmount, deleteProduct, increaseAmount } from '../store/actions';
 import { Product } from '../types/types';
 
 const ProductCard = (product: Product) => {
-    const { name, type, img, price, amount } = product;
+    const { id, name, type, img, price, amount } = product;
     const dispatch = useDispatch();
-    const onDecreaseAmountClick = (evt: any) => {
+    const onDecreaseAmountClick = (evt: FormEvent<HTMLButtonElement>) => {
         evt.preventDefault();
         if (amount === 0) {
             return;
@@ -34,14 +34,16 @@ const ProductCard = (product: Product) => {
                     {type}
                 </p>
                 <S.ButtonFlex>
-                    <button onClick={(evt) => onDecreaseAmountClick(evt)}>−</button>
+                    <button type='button' id={id} onClick={(evt) => onDecreaseAmountClick(evt)}
+                        onKeyPress={(evt) => evt.key === 'Enter' ? false : ''}
+                    >−</button>
                     <div>{amount}</div>
-                    <button onClick={(evt) => onIncreaseAmountClick(evt)}>+</button>
+                    <button type='button' onClick={(evt) => onIncreaseAmountClick(evt)}>+</button>
                 </S.ButtonFlex>
             </S.ContainerFlexColumns>
             <S.ContainerFlexColumns className='items-price'>
                 <h4>{price} руб.</h4>
-                <button onClick={(evt) => onDeleteProductClick(evt)}>Удалить</button>
+                <button type='button' onClick={(evt) => onDeleteProductClick(evt)}>Удалить</button>
             </S.ContainerFlexColumns>
         </S.ContainerFlexRows>
     );

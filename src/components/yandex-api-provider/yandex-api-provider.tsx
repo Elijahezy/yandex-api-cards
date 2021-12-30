@@ -17,7 +17,7 @@ const YandexApiProvider = ({ children }: any) => {
   }, []);
   return (
     <div>
-      <YMaps query={{ lang: 'en_RU', apikey: apiKey }}>
+      <YMaps query={{ lang: 'ru_RU', apikey: apiKey }}>
         <CartSuggestComponent />
         {children}
       </YMaps>

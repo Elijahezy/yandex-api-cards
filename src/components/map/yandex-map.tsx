@@ -1,34 +1,35 @@
 import * as S from './map.styled'
 import { Map, Placemark } from 'react-yandex-maps';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loadAddress, setAddressStatus } from '../store/actions';
+import { State } from '../types/types';
 
-const YandexMap = ({ ymaps, address, addressInput, totalPrice }: any) => {
+const YandexMap = ({ ymaps, addressInput, totalPrice }: any) => {
     const [coords, setCoords] = useState();
     const [onMapClickData, setOnMapClickData] = useState(Object);
     const [dataFromInput, setDataFromInput] = useState(Object);
-    const [isMapClicked, setIsMapClicked] = useState(false);
+
+    const status = useSelector<State, any>((state) => state.status)
+    const address = useSelector<State, string>((state) => state.address)
 
     const dispatch = useDispatch();
 
-    const onMapClick = (e: any) => {
-        const coords = e.get("coords");
+    const onMapClick = (evt: any) => {
+        const coords = evt.get("coords");
         new ymaps.geocode(coords, {
             results: 1,
         }).then((res: any) => {
             const firstGeoObject = res.geoObjects.get(0)
             setOnMapClickData(firstGeoObject);
-            setIsMapClicked(true);
+            dispatch(setAddressStatus(true));
             dispatch(loadAddress(firstGeoObject.properties._data.text))
             dispatch(setAddressStatus(true))
         })
     };
 
     useEffect(() => {
-        new ymaps.SuggestView(addressInput.current, {
-            offset: [10, 10],
-        })
+        new ymaps.SuggestView(addressInput.current, {})
 
         new ymaps.geocode(address, {
             results: 1,
@@ -41,10 +42,10 @@ const YandexMap = ({ ymaps, address, addressInput, totalPrice }: any) => {
                 setDataFromInput(bounds);
             })
 
-    }, [address, addressInput, ymaps.Placemark, ymaps.SuggestView, ymaps.geocode])
+    }, [address, addressInput, ymaps.SuggestView, ymaps.geocode])
 
 
-    const prop = { ...dataFromInput };
+    const verifiedAddress = { ...dataFromInput };
 
     return (
         <S.StyledContainer>
@@ -52,9 +53,9 @@ const YandexMap = ({ ymaps, address, addressInput, totalPrice }: any) => {
                 <p>Итог:</p>
                 <p>{totalPrice} руб.</p>
             </S.StyledPriceContainer>
-            <Map defaultState={{
-                center: [55.751574, 37.573856],
-                zoom: 9,
+            <Map state={{
+                center: coords ? [coords[0], coords[1]] : [55.751574, 37.573856],
+                zoom: coords ? 15 : 9,
                 controls: [],
             }}
                 width={'555px'}
@@ -62,28 +63,29 @@ const YandexMap = ({ ymaps, address, addressInput, totalPrice }: any) => {
                 onClick={onMapClick}
                 modules={['geocode']}
             >
-                <Placemark geometry={coords ? [coords[0], coords[1]] : []}
-                    options={{
-                        controls: [],
-                        balloonOffset: [3, -40]
-                    }}
-                    properties={{
-                        hintContent: prop.hintContent,
-                        balloonContentHeader: prop.balloonContentHeader,
-                        balloonContent: prop.balloonContent,
-                        iconCaption: prop.iconCaption,
-                        _data: { dataFromInput },
-                    }}
-                    modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
-                />
-                {isMapClicked ? <Placemark geometry={onMapClickData.geometry.getCoordinates()} properties={{
-                    hintContent: onMapClickData.properties._data.hintContent,
-                    balloonContentHeader: onMapClickData.properties._data.balloonContentHeader,
-                    balloonContent: onMapClickData.properties._data.balloonContent,
-                    iconCaption: onMapClickData.properties._data.iconCaption,
-                    _data: onMapClickData.properties._data
-                }} /> :
-                    ''
+                {
+                    status ? '' : <Placemark geometry={coords ? [coords[0], coords[1]] : []}
+                        options={{
+                            controls: [],
+                            balloonOffset: [3, -40]
+                        }}
+                        properties={{
+                            hintContent: verifiedAddress.hintContent,
+                            balloonContentHeader: verifiedAddress.balloonContentHeader,
+                            balloonContent: verifiedAddress.balloonContent,
+                            iconCaption: verifiedAddress.iconCaption,
+                            _data: { dataFromInput },
+                        }}
+                        modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+                    />}
+                {
+                    status ? <Placemark geometry={onMapClickData.geometry.getCoordinates()} properties={{
+                        hintContent: onMapClickData.properties._data.hintContent,
+                        balloonContentHeader: onMapClickData.properties._data.balloonContentHeader,
+                        balloonContent: onMapClickData.properties._data.balloonContent,
+                        iconCaption: onMapClickData.properties._data.iconCaption,
+                        _data: onMapClickData.properties._data
+                    }} /> : ''
                 }
             </Map>
         </S.StyledContainer>
