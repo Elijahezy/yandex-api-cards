@@ -9,7 +9,7 @@ const MainLayout = styled.div`
     justify-content: space-between;
 
     .items {
-        border-bottom: 1px solid ${({theme}) => theme.colors.grey2};
+        border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
         padding-bottom: 25px;
         margin-top: 25px;
     }
@@ -25,7 +25,7 @@ const MainLayout = styled.div`
     }
 
     a {
-        color: ${({theme}) => theme.colors.grey2}
+        color: ${({ theme }) => theme.colors.grey2}
     }
 
     h2 {
@@ -44,11 +44,13 @@ const MainLayout = styled.div`
     }
 `
 
+
+
 const ContactsContainer = styled.div`
     * {
         outline: none;
-        color: ${({theme}) => theme.colors.grey1};
-        border-color: ${({theme}) => theme.colors.grey2};
+        color: ${({ theme }) => theme.colors.grey1};
+        border-color: ${({ theme }) => theme.colors.grey2};
         font-size: 16px;
         width: 100%;
         margin-bottom: 20px;
@@ -66,9 +68,9 @@ const ContactsContainer = styled.div`
 
 `
 
-const ContactsStyledInput = styled.input`
+const ContactsInput = styled.input`
     border: 0px;
-    border-bottom: 1px solid ${({theme}) => theme.colors.grey2};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
     width: ${(props) => props.width || '100%'};
     padding: 18px 0px 9px 0px;
 
@@ -78,12 +80,11 @@ const ContactsStyledInput = styled.input`
     }
 `
 
-const ContactsStyledSelect = styled.select`
+const ContactsSelect = styled.select`
     padding: 18px 0px 9px 0px;
 
-
 `
-const FlexContainerRows = styled.div`
+const ContainerFlexRows = styled.div`
     display: flex;
     flex-direction: row;
     
@@ -103,7 +104,7 @@ const FlexContainerRows = styled.div`
         }
 
         p {
-            color: ${({theme}) => theme.colors.grey1}
+            color: ${({ theme }) => theme.colors.grey1}
         }
     }
 
@@ -119,20 +120,20 @@ const FlexContainerRows = styled.div`
             font-size: 20px;
             border: 0px;
             background-color: white;
-            border-bottom: 1px solid ${({theme}) => theme.colors.grey1};
-            color: ${({theme}) => theme.colors.grey1};
+            border-bottom: 1px solid ${({ theme }) => theme.colors.grey1};
+            color: ${({ theme }) => theme.colors.grey1};
             font-size: 14px;
         }
     }
 `
 
-const FlexContainerColumns = styled.div`
+const ContainerFlexColumns = styled.div`
     display: flex;
     flex-direction: column;
 
 `
 
-const FlexButton = styled.div`
+const ButtonFlex = styled.div`
     display: flex;
     flex-direction: row;
     border: 1px solid #000000;
@@ -157,9 +158,9 @@ const FlexButton = styled.div`
 export {
     MainLayout,
     ContactsContainer,
-    ContactsStyledInput,
-    FlexContainerRows,
-    ContactsStyledSelect,
-    FlexContainerColumns,
-    FlexButton
+    ContactsInput,
+    ContainerFlexColumns,
+    ContactsSelect,
+    ContainerFlexRows,
+    ButtonFlex
 }

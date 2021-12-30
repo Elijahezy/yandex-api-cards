@@ -24,26 +24,26 @@ const ProductCard = (product: Product) => {
         return dispatch(deleteProduct(product));
     }
     return (
-        <S.FlexContainerRows className='items'>
+        <S.ContainerFlexRows className='items'>
             <img src={img} width={'150px'} height={'150px'} alt="" />
-            <S.FlexContainerColumns className='items-info'>
+            <S.ContainerFlexColumns className='items-info'>
                 <h4>
                     {name}
                 </h4>
                 <p>
                     {type}
                 </p>
-                <S.FlexButton>
+                <S.ButtonFlex>
                     <button onClick={(evt) => onDecreaseAmountClick(evt)}>−</button>
                     <div>{amount}</div>
                     <button onClick={(evt) => onIncreaseAmountClick(evt)}>+</button>
-                </S.FlexButton>
-            </S.FlexContainerColumns>
-            <S.FlexContainerColumns className='items-price'>
+                </S.ButtonFlex>
+            </S.ContainerFlexColumns>
+            <S.ContainerFlexColumns className='items-price'>
                 <h4>{price} руб.</h4>
                 <button onClick={(evt) => onDeleteProductClick(evt)}>Удалить</button>
-            </S.FlexContainerColumns>
-        </S.FlexContainerRows>
+            </S.ContainerFlexColumns>
+        </S.ContainerFlexRows>
     );
 };
 
