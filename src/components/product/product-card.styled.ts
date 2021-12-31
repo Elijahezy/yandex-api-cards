@@ -4,7 +4,7 @@ const ContainerFlexRows = styled.div`
     display: flex;
     flex-direction: row;
     
-    .img {
+    img {
         width: 150px;
         height: 150px;
         background-color: teal;
@@ -43,6 +43,37 @@ const ContainerFlexRows = styled.div`
             font-size: 14px;
         }
     }
+
+    @media (max-width: 320px) {
+        justify-content: space-between;
+        img {
+            width: 80px;
+            height: 80px;
+        }
+        .items-price {
+            h4 {
+                font-size: 16px;
+            }
+            
+        }
+
+        .items-info {
+            justify-content: space-between;
+            width: 107px;
+            padding-left: 20px;
+
+
+            h4 {
+                font-size: 16px;
+            }
+
+            p {
+                margin: 10px 0px 10px 0px;
+                color: ${({ theme }) => theme.colors.grey1}
+            }
+        }
+
+    }
 `
 
 const ContainerFlexColumns = styled.div`
@@ -67,6 +98,15 @@ const ButtonFlex = styled.div`
         font-size: 20px;
         background-color: white;
         padding: 5px;
+    }
+
+    @media (max-width: 320px) {
+        width: 81px;
+        height: 34px;
+
+        button {
+            padding: 3px;
+        }
     }
     
 

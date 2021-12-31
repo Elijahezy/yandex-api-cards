@@ -2,14 +2,12 @@ import styled from 'styled-components'
 
 
 const StyledContainer = styled.div`
-    .leaflet-container {
-        width: 555px;
-        height: 700px;
-        z-index: 0;
-        position: relative;
-    }
     width: 555px;
     height: 700px;
+    @media (max-width: 320px) {
+        width: 320px;
+        height: 200px;
+    }
 `
 
 const StyledPriceContainer = styled.div`

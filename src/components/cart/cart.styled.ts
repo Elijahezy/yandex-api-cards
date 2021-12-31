@@ -42,6 +42,18 @@ const MainLayout = styled.div`
         padding: 24px 0px 23px 0px;
         margin-bottom: 50px;
     }
+
+    @media (max-width: 320px) {
+        margin: 0px 16px 0px 16px;
+
+        h2 {
+            font-size: 26px;
+            margin-top: 70px;
+            margin-bottom: 5px;
+            margin-top: 40px;
+        }
+    }
+
 `
 
 
@@ -64,7 +76,36 @@ const ContactsContainer = styled.div`
         display: inline-block;
         margin-bottom: 0px;
     }
+
+    #phone {
+        margin-left: 10%;
+        width: 50%;
+        margin-bottom: 0px;
+    }
+
+    #name {
+        margin-bottom: 0px;
+    }
     
+
+    @media (max-width: 320px) {
+        * {
+            padding: 18px 0px 9px 0px;
+            margin-bottom: 16px;
+        }
+
+        #name {
+            width: 100%;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        #phone {
+            width: 100%;
+            margin-left: 0%;
+            margin-bottom: 16px;
+        }
+    }
 
 `
 
@@ -74,10 +115,6 @@ const ContactsInput = styled.input`
     width: ${(props) => props.width || '100%'};
     padding: 18px 0px 9px 0px;
 
-    & + & {
-        margin-left: 10%;
-        width: 50%;
-    }
 `
 
 const ContactsSelect = styled.select`
@@ -154,6 +191,16 @@ const ButtonFlex = styled.div`
 
 `
 
+const PriceContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 24px;
+`
+
 
 export {
     MainLayout,
@@ -162,5 +209,6 @@ export {
     ContainerFlexColumns,
     ContactsSelect,
     ContainerFlexRows,
-    ButtonFlex
+    ButtonFlex,
+    PriceContainer
 }

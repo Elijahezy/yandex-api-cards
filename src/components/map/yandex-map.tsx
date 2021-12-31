@@ -1,6 +1,6 @@
 import * as S from './map.styled'
 import { Map, Placemark } from 'react-yandex-maps';
-import React, { useEffect, useState } from 'react';
+import React, { Ref, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAddress, setAddressStatus } from '../store/actions';
 import { State } from '../types/types';
@@ -9,6 +9,10 @@ const YandexMap = ({ ymaps, addressInput, totalPrice }: any) => {
     const [coords, setCoords] = useState();
     const [onMapClickData, setOnMapClickData] = useState(Object);
     const [dataFromInput, setDataFromInput] = useState(Object);
+    const mapRef = React.useRef<any>(null);
+    const setMapRef = useCallback((instance: Ref<any>) => {
+        mapRef.current = instance;
+    }, []);
 
     const status = useSelector<State, any>((state) => state.status)
     const address = useSelector<State, string>((state) => state.address)
@@ -44,50 +48,94 @@ const YandexMap = ({ ymaps, addressInput, totalPrice }: any) => {
 
     }, [address, addressInput, ymaps.SuggestView, ymaps.geocode])
 
-
+    const mediaQuery = window.matchMedia('(max-width: 320px)');
+    console.log(mediaQuery)
     const verifiedAddress = { ...dataFromInput };
-
     return (
         <S.StyledContainer>
-            <S.StyledPriceContainer>
-                <p>Итог:</p>
-                <p>{totalPrice} руб.</p>
-            </S.StyledPriceContainer>
-            <Map state={{
-                center: coords ? [coords[0], coords[1]] : [55.751574, 37.573856],
-                zoom: coords ? 15 : 9,
-                controls: [],
-            }}
-                width={'555px'}
-                height={'700px'}
-                onClick={onMapClick}
-                modules={['geocode']}
-            >
-                {
-                    status ? '' : <Placemark geometry={coords ? [coords[0], coords[1]] : []}
-                        options={{
-                            controls: [],
-                            balloonOffset: [3, -40]
-                        }}
-                        properties={{
-                            hintContent: verifiedAddress.hintContent,
-                            balloonContentHeader: verifiedAddress.balloonContentHeader,
-                            balloonContent: verifiedAddress.balloonContent,
-                            iconCaption: verifiedAddress.iconCaption,
-                            _data: { dataFromInput },
-                        }}
-                        modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
-                    />}
-                {
-                    status ? <Placemark geometry={onMapClickData.geometry.getCoordinates()} properties={{
-                        hintContent: onMapClickData.properties._data.hintContent,
-                        balloonContentHeader: onMapClickData.properties._data.balloonContentHeader,
-                        balloonContent: onMapClickData.properties._data.balloonContent,
-                        iconCaption: onMapClickData.properties._data.iconCaption,
-                        _data: onMapClickData.properties._data
-                    }} /> : ''
-                }
-            </Map>
+            {mediaQuery.matches === false ?
+                <div>
+                    <S.StyledPriceContainer>
+                        <p>Итог:</p>
+                        <p>{totalPrice} руб.</p>
+                    </S.StyledPriceContainer>
+                    <Map state={{
+                        center: coords ? [coords[0], coords[1]] : [55.751574, 37.573856],
+                        zoom: coords ? 15 : 9,
+                        controls: [],
+                    }}
+                        width={'555px'}
+                        height={'700px'}
+                        onClick={onMapClick}
+                        modules={['geocode']}
+                        instanceRef={setMapRef}
+                    >
+                        {
+                            status ? '' : <Placemark geometry={coords ? [coords[0], coords[1]] : []}
+                                options={{
+                                    controls: [],
+                                    balloonOffset: [3, -40]
+                                }}
+                                properties={{
+                                    hintContent: verifiedAddress.hintContent,
+                                    balloonContentHeader: verifiedAddress.balloonContentHeader,
+                                    balloonContent: verifiedAddress.balloonContent,
+                                    iconCaption: verifiedAddress.iconCaption,
+                                    _data: { dataFromInput },
+                                }}
+                                modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+                            />}
+                        {
+                            status ? <Placemark geometry={onMapClickData.geometry.getCoordinates()} properties={{
+                                hintContent: onMapClickData.properties._data.hintContent,
+                                balloonContentHeader: onMapClickData.properties._data.balloonContentHeader,
+                                balloonContent: onMapClickData.properties._data.balloonContent,
+                                iconCaption: onMapClickData.properties._data.iconCaption,
+                                _data: onMapClickData.properties._data
+                            }} /> : ''
+                        }
+                    </Map>
+                </div> :
+                <div>
+
+                    <Map state={{
+                        center: coords ? [coords[0], coords[1]] : [55.751574, 37.573856],
+                        zoom: coords ? 15 : 9,
+                        controls: [],
+                    }}
+                        width={mediaQuery.matches ? '320px' : '555px'}
+                        height={mediaQuery.matches ? '200px' : '700px'}
+                        onClick={onMapClick}
+                        modules={['geocode']}
+                        instanceRef={setMapRef}
+                    >
+                        {
+                            status ? '' : <Placemark geometry={coords ? [coords[0], coords[1]] : []}
+                                options={{
+                                    controls: [],
+                                    balloonOffset: [3, -40]
+                                }}
+                                properties={{
+                                    hintContent: verifiedAddress.hintContent,
+                                    balloonContentHeader: verifiedAddress.balloonContentHeader,
+                                    balloonContent: verifiedAddress.balloonContent,
+                                    iconCaption: verifiedAddress.iconCaption,
+                                    _data: { dataFromInput },
+                                }}
+                                modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+                            />}
+                        {
+                            status ? <Placemark geometry={onMapClickData.geometry.getCoordinates()} properties={{
+                                hintContent: onMapClickData.properties._data.hintContent,
+                                balloonContentHeader: onMapClickData.properties._data.balloonContentHeader,
+                                balloonContent: onMapClickData.properties._data.balloonContent,
+                                iconCaption: onMapClickData.properties._data.iconCaption,
+                                _data: onMapClickData.properties._data
+                            }} /> : ''
+                        }
+                    </Map>
+                </div>
+            }
         </S.StyledContainer>
     );
 };
